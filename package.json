@@ -1,0 +1,22 @@
+{
+  "version": "0.0.0",
+  "name": "@kmamal/eslint-plugin-no-autofix",
+  "description": "eslint-plugin-no-autofix",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kmamal/eslint-plugin-no-autofix.git"
+  },
+  "license": "MIT",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
+  "scripts": {
+    "test": "npx @kmamal/testing",
+    "update-exports": "node ./scripts/update-exports.mjs"
+  },
+  "dependencies": {
+    "@kmamal/util": "^0.1.15"
+  },
+  "devDependencies": {
+    "@kmamal/testing": "^0.0.28"
+  }
+}
