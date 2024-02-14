@@ -9,14 +9,10 @@
   "license": "MIT",
   "main": "./src/index.js",
   "exports": "./src/index.js",
-  "scripts": {
-    "test": "npx @kmamal/testing",
-    "update-exports": "node ./scripts/update-exports.mjs"
-  },
   "dependencies": {
-    "@kmamal/util": "^0.1.15"
+    "eslint-rule-composer": "^0.3.0"
   },
-  "devDependencies": {
-    "@kmamal/testing": "^0.0.28"
+  "peerDependencies": {
+    "eslint": "^8.56.0"
   }
 }
