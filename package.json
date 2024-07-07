@@ -4,7 +4,7 @@
   "description": "eslint-plugin-no-autofix",
   "repository": {
     "type": "git",
-    "url": "git@github.com:kmamal/eslint-plugin-no-autofix.git"
+    "url": "git+ssh://git@github.com:kmamal/eslint-plugin-no-autofix.git"
   },
   "license": "MIT",
   "main": "./src/index.js",
