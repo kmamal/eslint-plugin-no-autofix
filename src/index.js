@@ -1,3 +1,7 @@
+//
+// See also: https://github.com/eslint/rfcs/pull/125
+//
+
 const eslint = require('eslint')
 const ruleComposer = require('eslint-rule-composer')
 const Fs = require('node:fs')
