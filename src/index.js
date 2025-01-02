@@ -2,7 +2,7 @@ const eslint = require('eslint')
 const ruleComposer = require('eslint-rule-composer')
 
 const makeNeuteredRule = (rule) => ruleComposer
-	.mapReports(rule, (problem) => ({ ...problem, fix: null}))
+	.mapReports(rule, (problem) => ({ ...problem, fix: null }))
 
 const init = (plugins) => {
 	const rules = {}
