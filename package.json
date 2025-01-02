@@ -10,6 +10,7 @@
   "main": "./src/index.js",
   "exports": "./src/index.js",
   "dependencies": {
+    "@kmamal/find-up": "^0.0.1",
     "eslint-rule-composer": "^0.3.0"
   },
   "peerDependencies": {
