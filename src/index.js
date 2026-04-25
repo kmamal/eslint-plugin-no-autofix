@@ -1,7 +1,3 @@
-//
-// See also: https://github.com/eslint/rfcs/pull/125
-//
-
 const eslint = require('eslint')
 const ruleComposer = require('eslint-rule-composer')
 const Fs = require('node:fs')
@@ -22,7 +18,7 @@ const init = (plugins) => {
 	}
 
 	for (const [ pluginName, plugin ] of Object.entries(plugins)) {
-		for (const [ ruleName, rule ] of Object.entries(plugin.rules)) {
+		for (const [ ruleName, rule ] of Object.entries(plugin?.rules ?? {})) {
 			neuteredRules[`${pluginName}/${ruleName}`] = makeNeuteredRule(rule)
 		}
 	}

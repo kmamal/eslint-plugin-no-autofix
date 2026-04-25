@@ -1,5 +1,5 @@
 {
-  "version": "0.0.4",
+  "version": "0.0.5",
   "name": "@kmamal/eslint-plugin-no-autofix",
   "description": "eslint-plugin-no-autofix",
   "repository": {
@@ -10,10 +10,10 @@
   "main": "./src/index.js",
   "exports": "./src/index.js",
   "dependencies": {
-    "@kmamal/find-up": "^0.0.1",
-    "eslint-rule-composer": "^0.3.0"
+    "@kmamal/find-up": "0.0.1",
+    "eslint-rule-composer": "0.3.0"
   },
   "peerDependencies": {
-    "eslint": "^9.17.0"
+    "eslint": "9.17.0"
   }
 }
