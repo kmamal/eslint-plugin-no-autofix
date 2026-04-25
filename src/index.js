@@ -12,7 +12,7 @@ const makeNeuteredRule = (rule) => ruleComposer
 const init = (plugins) => {
 	const neuteredRules = {}
 
-	const builtinRules = new eslint.Linter({ configType: 'eslintrc' }).getRules()
+	const builtinRules = new eslint.Linter({ configType: 'flat' }).getRules()
 	for (const [ ruleName, rule ] of builtinRules.entries()) {
 		neuteredRules[ruleName] = makeNeuteredRule(rule)
 	}
@@ -24,17 +24,13 @@ const init = (plugins) => {
 	}
 
 	return {
-		plugins: {
-			'no-autofix': {
-				meta: {
-					name: pkg.name,
-					version: pkg.version,
-				},
-				rules: neuteredRules,
-				configs: {},
-				processors: {}
-			}
-		}
+		meta: {
+			name: pkg.name,
+			version: pkg.version,
+		},
+		configs: {},
+		rules: neuteredRules,
+		processors: {}
 	}
 }
 
