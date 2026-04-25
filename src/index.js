@@ -1,37 +1,64 @@
-const eslint = require('eslint')
-const ruleComposer = require('eslint-rule-composer')
 const Fs = require('node:fs')
-const { findUpSync } = require('@kmamal/find-up')
+const Path = require('node:path')
 
-const pkg = JSON.parse(Fs.readFileSync(findUpSync('package.json'), 'utf8'))
+const pkg = JSON.parse(Fs.readFileSync(Path.join(__dirname, '../package.json')))
 
+const eslintUnsafe = require('eslint/use-at-your-own-risk')
 
-const makeNeuteredRule = (rule) => ruleComposer
-	.mapReports(rule, (problem) => ({ ...problem, fix: null }))
+const PLUGIN_NAME = 'no-autofix'
 
-const init = (plugins) => {
-	const neuteredRules = {}
+module.exports = (configs, rulesToNeuter) => {
+	const findOriginalRule = (ruleName) => {
+		const builtinRule = eslintUnsafe.builtinRules.get(ruleName)
+		if (builtinRule) { return builtinRule }
 
-	const builtinRules = new eslint.Linter({ configType: 'flat' }).getRules()
-	for (const [ ruleName, rule ] of builtinRules.entries()) {
-		neuteredRules[ruleName] = makeNeuteredRule(rule)
+		for (const config of configs) {
+			if (!config.plugins) { continue }
+			for (const [pluginName, plugin] of Object.entries(config.plugins)) {
+				const pluginRule = plugin.rules[ruleName.slice(pluginName.length + 1)]
+				if (pluginRule) { return pluginRule }
+			}
+		}
+
+		return null
 	}
 
-	for (const [ pluginName, plugin ] of Object.entries(plugins)) {
-		for (const [ ruleName, rule ] of Object.entries(plugin?.rules ?? {})) {
-			neuteredRules[`${pluginName}/${ruleName}`] = makeNeuteredRule(rule)
+	const ruleDefinitions = {}
+	const ruleSettings = {}
+
+	for (const [ruleName, settings] of Object.entries(rulesToNeuter)) {
+		const originalRule = findOriginalRule(ruleName)
+
+		ruleDefinitions[ruleName] = {
+			meta: originalRule.meta,
+			create: (context) => {
+				const proxy = Object.create(context, {
+					report: {
+						value: (data) =>{
+							delete data.fix
+							return context.report(data)
+						},
+						writable: true,
+						configurable: true,
+					},
+				})
+				return originalRule.create(proxy)
+			},
 		}
+		ruleSettings[`${PLUGIN_NAME}/${ruleName}`] = settings
+		ruleSettings[ruleName] = 'off'
 	}
 
 	return {
-		meta: {
-			name: pkg.name,
-			version: pkg.version,
+		plugins: {
+			[PLUGIN_NAME]: {
+				meta: {
+					name: pkg.name,
+					version: pkg.version,
+				},
+				rules: ruleDefinitions,
+			},
 		},
-		configs: {},
-		rules: neuteredRules,
-		processors: {}
+		rules: ruleSettings,
 	}
 }
-
-module.exports = { init }
